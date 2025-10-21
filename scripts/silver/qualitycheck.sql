@@ -53,3 +53,69 @@ where prd_cost is null or prd_cost <= 0;   -- to check any null values in produc
 
 select * from bronze.crm_prd_info
  where prd_end_dt < prd_start_dt
+
+
+ -- fix _sales_details
+
+ select * from bronze.crm_sales_details
+
+ select sls_ord_num from bronze.crm_sales_details
+ where sls_ord_num != trim(sls_ord_num)
+
+  select sls_ord_num from bronze.crm_sales_details
+where sls_prd_key not in (select prd_key from silver.crm_prd_info)
+
+select sls_order_dt from bronze.crm_sales_details
+where sls_order_dt !=len(sls_order_dt) ;
+
+select sls_order_dt from bronze.crm_sales_details
+where len(sls_order_dt) <=0;
+
+select sls_order_dt from bronze.crm_sales_details
+where sls_order_dt is null ;
+
+select sls_ship_dt from bronze.crm_sales_details
+where sls_ship_dt !=len(sls_ship_dt) or sls_ship_dt is null;
+
+
+
+select sls_due_dt from bronze.crm_sales_details
+where sls_due_dt !=len(sls_due_dt);
+
+
+-- _erp_cust_az12
+
+select * from bronze.erp_cust_az12
+
+select * from bronze.crm_cust_info
+
+select distinct bdate from  bronze.erp_cust_az12
+where bdate > getdate() or bdate < '1925-10-17';
+
+select distinct gen from  bronze.erp_cust_az12;
+
+
+
+-- _erp_loc_a101
+
+select * from bronze.erp_loc_a101;
+
+select * from bronze.crm_cust_info;
+
+select distinct cntry from bronze.erp_loc_a101;
+
+select *  from silver.erp_loc_a101;
+
+
+--_ erp.px_cat_g1v2
+
+select * from bronze.erp_px_cat_g1v2;
+
+
+select * from silver.crm_prd_info;
+
+select distinct cat from bronze.erp_px_cat_g1v2;
+
+select distinct subcat from bronze.erp_px_cat_g1v2;
+
+select distinct maintenance from bronze.erp_px_cat_g1v2;
