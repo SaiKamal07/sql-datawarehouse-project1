@@ -23,8 +23,7 @@ when upper(trim(cst_gndr))='M' then 'Male '
 else 'n/a'
 end as cst_gndr,
 cst_create_date from
-(select *,row_number() over(partition by cst_id order by cst_id desc)
-as rank_ctr_date from bronze.crm_cust_info) 
+(select *,row_number() over(partition by cst_id order by cst_id desc)as rank_ctr_date from bronze.crm_cust_info) 
 as t where rank_ctr_date= 1 and cst_id is not null ;
 
 
@@ -99,17 +98,6 @@ INSERT INTO silver.crm_sales_details (
 			sls_quantity,
 			sls_price
 		)
-INSERT INTO silver.crm_sales_details (
-			sls_ord_num,
-			sls_prd_key,
-			sls_cust_id,
-			sls_order_dt,
-			sls_ship_dt,
-			sls_due_dt,
-			sls_sales,
-			sls_quantity,
-			sls_price
-		)
 
 select 
 sls_ord_num,
@@ -166,6 +154,22 @@ when trim(gen) in ('M','MALE') then 'MALE'
 else 'N/A'
 end as gen from bronze.erp_cust_az12;
 
+-- INSERT into silver.erp_loc_a101;
+
+
+INSERT INTO silver.erp_loc_a101 (
+			cid,
+			cntry
+		)
+SELECT 
+REPLACE(cid,'-','') as cid,
+CASE 
+ WHEN TRIM(cntry) = 'DE' then 'Germany'
+ WHEN TRIM(cntry) IN ('US','USA') then 'United States'
+ when trim(cntry) = '' or cntry IS NULL  then 'n/a'
+ else trim(cntry)
+ end as cntry
+FROM bronze.erp_loc_a101;
 
 
 
