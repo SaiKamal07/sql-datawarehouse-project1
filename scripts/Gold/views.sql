@@ -15,7 +15,8 @@ select
         ELSE COALESCE(ca.gen, 'n/a')  			   -- Fallback to ERP data
     END AS gender,   
     ca.bdate                       AS birthdate,
-    ci.cst_create_date             AS create_date
+    ci.cst_create_date             AS create_date,
+    la.cntry                       as country
 FROM silver.crm_cust_info ci
 LEFT JOIN silver.erp_cust_az12 ca
     ON ci.cst_key = ca.cid
