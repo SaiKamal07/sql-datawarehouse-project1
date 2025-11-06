@@ -34,7 +34,7 @@ SELECT
         WHEN current_sales - LAG(current_sales) OVER (PARTITION BY product_name ORDER BY order_year) < 0 THEN 'Decrease'
         ELSE 'No Change'
     END AS py_change
-    FROM yearly_product_sales
+    FROM yearly_product_sales;
 
 
 
@@ -83,7 +83,7 @@ SELECT
 cost_range,
 Count(*) as total_products
 from product_segments
-group by cost_range
+group by cost_range;
 
 
 
